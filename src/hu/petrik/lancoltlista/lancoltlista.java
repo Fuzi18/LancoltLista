@@ -1,22 +1,37 @@
 package hu.petrik.lancoltlista;
 
-public class lancoltlista <T>{
+public class lancoltlista<T> {
     private ListaElem elso;
     private ListaElem utolso;
 
     public void hozzaAd(T ertek) {
+        ListaElem ujElem = new ListaElem(ertek);
+        ujElem.setElozo(this.utolso);
         if (this.elso == null) {
-            this.elso = new ListaElem(ertek);
-            this.utolso = new ListaElem(ertek);
+            this.elso = ujElem;
 
-        }else{
-            ListaElem ujUtolso = new ListaElem(ertek);
-            ujUtolso.setElozo(this.utolso);
-
+        } else {
+            this.utolso.setKovetkezo(ujElem);
         }
+        this.utolso = ujElem;
     }
 
-    private class  ListaElem{
+    @Override
+    public String toString() {
+        StringBuilder builder= new StringBuilder();
+        ListaElem jelenlegiElem = this.elso;
+        if (jelenlegiElem != null){
+            builder.append(jelenlegiElem);
+            jelenlegiElem = jelenlegiElem.getKovetkezo();
+        }
+        while (jelenlegiElem != null){
+            builder.append(", ").append(jelenlegiElem);
+            jelenlegiElem = jelenlegiElem.getKovetkezo();
+        }
+        return builder.toString();
+    }
+
+    private class ListaElem {
         private T ertek;
         private ListaElem kovetkezo;
         private ListaElem elozo;
@@ -24,7 +39,7 @@ public class lancoltlista <T>{
         public ListaElem(T ertek) {
             this.ertek = ertek;
             this.kovetkezo = null;
-            this.elozo= null;
+            this.elozo = null;
         }
 
         public ListaElem getKovetkezo() {
@@ -43,12 +58,14 @@ public class lancoltlista <T>{
             this.elozo = elozo;
         }
 
-        public void hozzaAd(T ertek) {
-            if (this.kovetkezo == null){
-                this.kovetkezo = new ListaElem(ertek);
-            }else {
-                this.kovetkezo.hozzaAd(ertek);
+        @Override
+        public String toString() {
+            String s = this.ertek.toString();
+            if (this.kovetkezo != null){
+                s += ", " + this.kovetkezo;
             }
+            return s;
+
         }
     }
 }

@@ -13,6 +13,7 @@ public class Main {
             list.hozzaAd(ertek);
 
         }
+        System.out.println(list);
 
     }
 }
